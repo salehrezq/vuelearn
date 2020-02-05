@@ -14,32 +14,32 @@
 
 <div id="app">
     <div class="container">
-        <form v-if="!submitted" action="" class="mt-5">
-            <div class="form-group">
-                <label for="email"></label>
-                <input type="email" v-model="email" class="form-control form-control-lg">
-            </div>
-            <button type="submit" @click.prevent="process" class="btn btn-primary">Submit</button>
-        </form>
-        <h1 v-else v-cloak class="mt-5">Thank you for input</h1>
+        <img :src="imgSrc" :title="imgTitle">
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
 </body>
 
 <script>
-   var vm = new Vue({
+
+    var apiKey = "Q24N6wqLbxDIRpOb6HNh9yQUiZAN9xGiEaVWHfhr";
+    var url = "https://api.nasa.gov/planetary/apod?api_key=" + apiKey;
+
+    var vm = new Vue({
         el: '#app',
         data: {
-            email: 'saleh@ex.com',
-            submitted: false
+            imgSrc: '',
+            imgTitle: ''
         },
-        methods:{
-            process: function(){
-                this.submitted = true
-            }
-        }
     });
+
+    axios.get(url).then(function(res){
+        vm.imgSrc = res.data.url;
+        vm.imgTitle = res.data.title;
+    });
+
 </script>
 </html>
