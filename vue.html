@@ -16,6 +16,9 @@
     <div class="container">
         <div class="card mt-5">
             <h2 class="card-header">Near Earth Objects</h2>
+            <div class="m-3" v-if="asteroids.length > 0" v-cloak>
+                <p>Showing {{asteroids.length}} items</p>
+            </div>
             <table class="table">
                 <thead class="thead-light"></thead>
                 <th>#</th>
