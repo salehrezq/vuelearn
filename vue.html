@@ -8,6 +8,10 @@
         [v-cloak]{
             display: none;
         }
+        .highlight{
+            border: solid 3px red;
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -28,9 +32,7 @@
                 <th>Miss Distance</th>
                 <th>Remove</th>
                 <tbody v-cloak>
-                <!--<tr v-for="(asteroid, index) in asteroids" :key="asteroid.neo_reference_id" :style="getRowStyle(asteroid)">-->
-                <tr v-for="(asteroid, index) in asteroids" :key="asteroid.neo_reference_id" :style="getRowStyle(asteroid)" style="color: green">
-                <!--<tr v-for="(asteroid, index) in asteroids" :key="asteroid.neo_reference_id" :style="[getRowStyle(asteroid), {color: 'blue'}]" style="color: green">-->
+                <tr :class="[{highlight: isMissingData(asteroid)}, 'shadow-sm']" v-for="(asteroid, index) in asteroids" :key="asteroid.neo_reference_id">
                 <td>{{index+1}}</td>
                     <td>{{asteroid.name}}</td>
                     <td>{{getApproachDate(asteroid)}}</td>
@@ -114,7 +116,12 @@
                         'color': 'red'
                     };
                 }
+            },
+            isMissingData: function (asteroid) {
+                // A boolean value returned.
+                return !asteroid.close_approach_data[0];
             }
+
         }
     });
 
