@@ -12,6 +12,13 @@
             border: solid 3px red;
             color: red;
         }
+        .shooting-star-leave-to, .shooting-star-enter{
+            transform: translateX(150px) rotate(30deg);
+            opacity: 0;
+        }
+        .shooting-star-enter-active, .shooting-star-leave-active{
+            transition: all .5s ease;
+        }
     </style>
 </head>
 <body>
@@ -20,9 +27,14 @@
     <div class="container">
         <div class="card mt-5">
             <h2 class="card-header">Near Earth Objects</h2>
-            <div class="m-3" v-if="numAsteroids > 0" v-cloak>
-                <p>Showing {{numAsteroids}} items</p>
-                <p>{{closestObject}} has the shortest miss distance</p>
+            <transition name="shooting-star">
+                <div class="m-3" v-if="numAsteroids > 0 && showSummary" v-cloak>
+                    <p>Showing {{numAsteroids}} items</p>
+                    <p>{{closestObject}} has the shortest miss distance</p>
+                </div>
+            </transition>
+            <div class="m-3">
+            <button @click="showSummary = !showSummary" type="button" class="btn btn-link" v-cloak>{{showOrHide}}</button>
             </div>
             <table class="table table-striped">
                 <thead class="thead-light"></thead>
@@ -63,7 +75,8 @@
     var vm = new Vue({
         el: '#app',
         data: {
-            asteroids: []
+            asteroids: [],
+            showSummary: true
         },
 
         created: function(){
@@ -84,6 +97,9 @@
                     return asteroid.close_approach_data[0].miss_distance.miles == minimumMissDistance;
                 });
                 return asteroid.name;
+            },
+            showOrHide: function () {
+                return this.showSummary? 'Hide Summary' : 'Show Summary';
             }
         },
         methods: {
@@ -120,8 +136,7 @@
             isMissingData: function (asteroid) {
                 // A boolean value returned.
                 return !asteroid.close_approach_data[0];
-            }
-
+            },
         }
     });
 
