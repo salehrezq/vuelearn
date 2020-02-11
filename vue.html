@@ -19,6 +19,13 @@
         .shooting-star-enter-active, .shooting-star-leave-active{
             transition: all .5s ease;
         }
+        .asteroid-list-leave-to, .asteroid-list-enter{
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .asteroid-list-enter-active, .asteroid-list-leave-active{
+            transition: all 650ms linear;
+        }
     </style>
 </head>
 <body>
@@ -43,23 +50,25 @@
                 <th>Close Approach Date</th>
                 <th>Miss Distance</th>
                 <th>Remove</th>
-                <tbody v-cloak>
-                <tr :class="[{highlight: isMissingData(asteroid)}, 'shadow-sm']" v-for="(asteroid, index) in asteroids" :key="asteroid.neo_reference_id">
-                <td>{{index+1}}</td>
-                    <td>{{asteroid.name}}</td>
-                    <td>{{getApproachDate(asteroid)}}</td>
-                    <td>
-                        <ul v-if="asteroid.close_approach_data.length > 0">
-                            <li  v-for="(value, propName, index) in asteroid.close_approach_data[0].miss_distance">
-                                {{index+1}}# {{propName}}: {{value}}
-                            </li>
-                        </ul>
-                    </td>
-                    <td>
-                        <button @click="remove(index)" class="btn btn-warning">Remove</button>
-                    </td>
-                </tr>
+                <!--<transition-group tag="tbody" name="asteroid-list" v-cloak>-->
+                 <tbody is="transition-group" name="asteroid-list" v-cloak>
+                    <tr :class="[{highlight: isMissingData(asteroid)}, 'shadow-sm']" v-for="(asteroid, index) in asteroids" :key="asteroid.neo_reference_id">
+                    <td>{{index+1}}</td>
+                        <td>{{asteroid.name}}</td>
+                        <td>{{getApproachDate(asteroid)}}</td>
+                        <td>
+                            <ul v-if="asteroid.close_approach_data.length > 0">
+                                <li  v-for="(value, propName, index) in asteroid.close_approach_data[0].miss_distance">
+                                    {{index+1}}# {{propName}}: {{value}}
+                                </li>
+                            </ul>
+                        </td>
+                        <td>
+                            <button @click="remove(index)" class="btn btn-warning">Remove</button>
+                        </td>
+                    </tr>
                 </tbody>
+                <!--</transition-group>-->
             </table>
         </div>
     </div>
