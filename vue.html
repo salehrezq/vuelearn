@@ -14,6 +14,7 @@
 
 <div id="app">
     <div class="container">
+        <another-component></another-component>
         <my-component v-for="i in 1000"></my-component>
     </div>
 </div>
@@ -23,12 +24,33 @@
 </body>
 
 <script>
+
+    // Just a plain JavaScript object
+    var anotherComponent = {
+        data: function(){
+            return {
+                msg: 'Hello from another component!'
+            }
+        },
+        template: '<h1>{{msg}}</h1>'
+    }
+
+    /**
+     * Either register anotherComponent globally to Vue.component as a second argument
+     * Or register anotherComponent as a local component known to a single Vue instance using the components{} object option (See below)
+     */
+    // Vue.component('another-component', anotherComponent);
+
     Vue.component('my-component', {
         template: '<strong>A static element....</strong>'
     });
 
     var vm = new Vue({
-        el: '#app'
+        el: '#app',
+        // Register anotherComponent as a local component known to a single Vue instance using the components{} object option
+        components: {
+            'another-component': anotherComponent
+        }
     });
 </script>
 </html>
