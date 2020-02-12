@@ -14,7 +14,7 @@
 
 <div id="app">
     <div class="container">
-        <img-of-the-day>
+        <img-of-the-day width="400" height="400">
             <h3 slot="title">#1</h3>
             <p slot="caption">Hi am a slot replacer</p>
         </img-of-the-day>
@@ -36,11 +36,11 @@
 
         template: '<div>' +
         '<slot name="title"><h3>Title slot</h3></slot>' +
-        '<img width="300" height="200" :src="imgSrc" :title="imgTitle">' +
+        '<img :width="width || 300" :height="height || 300" :src="imgSrc" :title="imgTitle">' +
         '<slot name="caption" :date="date"><p>Caption slot</p></slot>' +
         '</div>',
 
-        props: ['date'],
+        props: ['date', 'width', 'height'],
 
         data: function(){
             return {
