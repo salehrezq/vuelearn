@@ -14,43 +14,56 @@
 
 <div id="app">
     <div class="container">
-        <another-component></another-component>
-        <my-component v-for="i in 1000"></my-component>
+        <img-of-the-day></img-of-the-day>
+        <img-of-the-day date="2018-08-07"></img-of-the-day>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 </body>
 
 <script>
 
-    // Just a plain JavaScript object
-    var anotherComponent = {
+    Vue.component('img-of-the-day', {
+
+        template: '<div>' +
+        '<img :src="imgSrc" :title="imgTitle">' +
+        '<p>{{date || "today"}}</p>' +
+        '</div>',
+
+        props: ['date'],
+
         data: function(){
             return {
-                msg: 'Hello from another component!'
-            }
+            imgSrc: '',
+            imgTitle: ''};
+            },
+
+        created: function(){
+            this.fetchData();
         },
-        template: '<h1>{{msg}}</h1>'
-    }
 
-    /**
-     * Either register anotherComponent globally to Vue.component as a second argument
-     * Or register anotherComponent as a local component known to a single Vue instance using the components{} object option (See below)
-     */
-    // Vue.component('another-component', anotherComponent);
-
-    Vue.component('my-component', {
-        template: '<strong>A static element....</strong>'
-    });
+        methods: {
+            fetchData: function(){
+                var apiKey = "Q24N6wqLbxDIRpOb6HNh9yQUiZAN9xGiEaVWHfhr";
+                var url = "https://api.nasa.gov/planetary/apod?api_key=" + apiKey;
+                if(this.date){
+                    url += '&date=' + this.date;
+                }
+                var self = this;
+                axios.get(url).then(function(res){
+                    self.imgSrc = res.data.url;
+                    self.imgTitle = res.data.title;
+                });
+            }
+        }
+    })
 
     var vm = new Vue({
         el: '#app',
-        // Register anotherComponent as a local component known to a single Vue instance using the components{} object option
-        components: {
-            'another-component': anotherComponent
-        }
     });
+
 </script>
 </html>
